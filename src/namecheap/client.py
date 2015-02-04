@@ -22,6 +22,7 @@
 #
 
 import urllib2
+from urllib import urlencode
 from decimal import Decimal
 from xml.etree import ElementTree
 
@@ -51,13 +52,10 @@ class NCClient(object):
         self.address = NCUserAddress(self)
 
     def _make_url(self, command, args):
-        flat_args = ""
-
-        for k, v in args.items():
-            flat_args += "&{0}={1}".format(k, v)
+        flat_args = urlencode(args)
 
         url = "{0}?ApiUser={1}&ApiKey={2}&UserName={3}&ClientIP={4}" \
-              "&Command={5}{6}".format(
+              "&Command={5}&{6}".format(
                   self.environment,
                   self.apiuser,
                   self.apikey,
